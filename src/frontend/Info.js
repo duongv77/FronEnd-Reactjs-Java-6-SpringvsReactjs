@@ -1,5 +1,5 @@
 
-function Info({ onHanleChage, register, handleSubmit, errors , userLogin}) {
+function Info({ onHanleChage, register, handleSubmit, errors , userLogin, upImg, image}) {
     const { photo, fullname, email, activated } = userLogin
 
     return (
@@ -13,8 +13,8 @@ function Info({ onHanleChage, register, handleSubmit, errors , userLogin}) {
                                 <form enctype="multipart/form-data" onSubmit={handleSubmit(onHanleChage)}>
                                     <div className="row pb-5">
                                         <div className="col-lg-5 max-withd" >
-                                            <img src={"img/" + photo} className="img-max" alt={photo} />
-                                            <input type="file" {...register("file")} />
+                                            <img src={ image} className="img-max" alt={image} />
+                                            <input type="file" {...register("file")} id="img" onChange={()=>{return upImg()}}/>
                                         </div>
                                         <div className="col-lg-7 text-left d-flex justify-content-start">
                                             <div className="row login_form pb-5" >

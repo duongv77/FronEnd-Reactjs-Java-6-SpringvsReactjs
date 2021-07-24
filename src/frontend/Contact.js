@@ -63,7 +63,7 @@ function Contact(){
                                     </div>
                                 </div>
                                 <div className="col-md-12 text-right">
-                                    <button type="submit" value="submit" className="primary-btn">Send Message</button>
+                                    <button type="reset" value="submit" className="primary-btn">Send Message</button>
                                 </div>
                             </form>
                         </div>

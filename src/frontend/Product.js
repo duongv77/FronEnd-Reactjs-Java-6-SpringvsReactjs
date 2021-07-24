@@ -3,7 +3,9 @@ import {
 } from "react-router-dom";
 
 
-function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSale, showListProduct, showPrice, onChangePage, onClickPage}) {
+function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSale, showListProduct, showPrice, onChangePage, onClickPage, onChanSeach, onClickAddCart}) {
+    
+    
     return (
         <div id="category">
             <div>
@@ -66,6 +68,9 @@ function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSal
                                         <option value={24}>Show 24</option>
                                     </select>
                                 </div>
+                                <div className="sorting mr-auto ">
+                                    <input placeholder="Tìm kiếm..."  onChange={(e)=>{onChanSeach(e)}} className="form-control "/>
+                                </div>
                                 <div className="pagination">
                                     {/* <a href="#" className="prev-arrow"><i className="fa fa-long-arrow-left" aria-hidden="true" /></a> */}
                                     <button onClick={(e)=>{onClickPage(e)}} className="btn btn-light mr-2" value={0}>1</button>
@@ -88,10 +93,10 @@ function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSal
                                                 <div className="col-lg-4 col-md-6" key={index}>
                                                     <div className="single-product">
                                                         
-                                                        <img className="img-fluid" src={"img/"+value.image} alt={"img/"+value.image} />
+                                                        <img className="img-fluid" src={value.image} alt={value.image} />
                                                         <div className="product-details">
                                                             <div className="prd-bottom">
-                                                                <a href className="social-info">
+                                                                <a href className="social-info" onClick={()=>{onClickAddCart(value.id)}}>
                                                                     <span className="ti-bag" />
                                                                     <p className="hover-text">add to bag</p>
                                                                 </a>
@@ -104,7 +109,7 @@ function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSal
                                                                     <p className="hover-text">compare</p>
                                                                 </a>
                                                                 <NavLink className="social-info" 
-                                                                to={`/productdetail_${value.id}`}
+                                                                to={`/productdetail/${value.id}`}
                                                                 // to={`/product/view/${value.id}`}
                                                                 
                                                                 >

@@ -2,12 +2,17 @@ import Info from '../frontend/Info'
 import { useForm } from "react-hook-form";
 import axios from "../api/RestFullAPI";
 import swal from 'sweetalert';
-import {  useState } from 'react';
+import { useState } from 'react';
+import UpdateImageFireBase from "../backend/UpdateImageFireBase";
+import firebase from "firebase"
 
 function InfoLogic({ showNotification }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    
+
     const [userLogin, setUserLogin] = useState(JSON.parse(localStorage.getItem("userLogin")))
+
+    const [photo, setPhoto] = useState(userLogin.photo)
+
     console.log(userLogin)
 
     const onHanleChage = (data, e) => {
@@ -29,26 +34,9 @@ function InfoLogic({ showNotification }) {
     }
 
     const setData = (data) => {
-        const { file, fullname, email } = data
-        try {
-            //nếu có ảnh thì vào đây
-            const { name, size } = file[0]
-            const photo = name
-            if (size > 1048570) {
-                showNotification('error', 'Error!', 'Kích thước file quá lớn !')
-                return
-            }
-            const userUpdate = { fullname, email, photo }
-            upPhoto(file) //chuyển ảnh được chọn đến thư mục đã chọn trước đấy
-            updatUserLogin(userUpdate)
-        } catch (error) {
-            //nếu không có ảnh thì vào đây
-            const userLoginOld = JSON.parse(localStorage.getItem("userLogin"))
-            const { photo } = userLoginOld
-            const userUpdate = { fullname, email, photo }
-            console.log(userUpdate)
-            updatUserLogin(userUpdate)
-        }
+        const { fullname, email } = data
+        const userUpdate = { fullname, email, photo }
+        updatUserLogin(userUpdate)
     }
 
     const updatUserLogin = (data) => {
@@ -61,15 +49,15 @@ function InfoLogic({ showNotification }) {
         upDateUser(userLoginNew)
     }
 
-    const upDateUser = async(data) => {
+    const upDateUser = async (data) => {
         try {
             const url = "/api/v2/user/update"
-            const response =await axios.put(url, data)
+            const response = await axios.put(url, data)
             console.log(response)
-            if(response===true){
+            if (response === true) {
                 showNotification('success', 'Success!', 'Cập nhập thông tin thành công !!!')
                 upLocalStorage(data) // set lại user đã được cập nhập vào localstorage
-            }else{
+            } else {
                 showNotification('error', 'Error!', 'Cập nhập thông tin không thành công !')
             }
             return response
@@ -78,31 +66,45 @@ function InfoLogic({ showNotification }) {
         }
     }
 
-    const upPhoto = async (data) => {
-        try {
-            var formData = new FormData();
-            formData.append("photo", data[0]);
-            
-            const url = '/api/v1/user/photo'
-            
-            const response = await axios.postAnh(url, formData);
+    // const upPhoto = async (data) => {
+    //     try {
+    //         var formData = new FormData();
+    //         formData.append("photo", data[0]);
 
-            const { status } = response
-            if (status !== 200) {
-                showNotification('error', 'Error!', 'Lỗi không thể đổi ảnh !!!')
-            }
-            console.log(response)
-            return response;
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    //         const url = '/api/v1/user/photo'
+
+    //         const response = await axios.postAnh(url, formData);
+
+    //         const { status } = response
+    //         if (status !== 200) {
+    //             showNotification('error', 'Error!', 'Lỗi không thể đổi ảnh !!!')
+    //         }
+    //         console.log(response)
+    //         return response;
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     const upLocalStorage = (data) => {
         localStorage.setItem("userLogin", JSON.stringify(data))
         setUserLogin(data)
     }
 
+    const upImg = () => {
+        try {
+            const file = document.getElementById('img').files[0]
+            let storagerRef = firebase.storage().ref(`images/${file.name}`);
+            storagerRef.put(file).then(function () {
+                storagerRef.getDownloadURL().then((url) => {
+                    setPhoto(url)
+                })
+            })
+        } catch (error) {
+            showNotification('error', 'Error!', 'Cập nhập ảnh không thành công !')
+        }
+
+    }
 
     return (
         <Info
@@ -111,6 +113,8 @@ function InfoLogic({ showNotification }) {
             handleSubmit={handleSubmit}
             errors={errors}
             userLogin={userLogin}
+            upImg={upImg}
+            image={photo}
         />
     )
 }

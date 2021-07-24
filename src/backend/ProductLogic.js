@@ -1,10 +1,14 @@
 import Product from '../frontend/Product'
-import {  useState } from "react"; 
+import {  useRef, useState } from "react"; 
 import productAPI from "../api/ProductAPI";
+import CartAPI from '../api/CartAPI';
+import {  useHistory } from "react-router-dom";
+import swal from 'sweetalert';
 
-function ProductLogic({listHangsx,listProduct}){
-
+function ProductLogic({listHangsx,listProduct, showNotification}){
+    const typingTimeOut = useRef(null)
     const[listProductToHangsx, setListProductToHangsx] = useState(listProduct)
+    const history = useHistory()
 
     const showAllProduct = (e) => {
         e.preventDefault()
@@ -39,20 +43,28 @@ function ProductLogic({listHangsx,listProduct}){
                 const priceOld = price*(100-sale)/100
                 return (
                     <div>
-                        <h6>{priceOld} VNĐ</h6>
-                        <h6 className="l-through font-italic">{price} VNĐ</h6>
+                        <h6>{numberWithCommas(priceOld)} VNĐ</h6>
+                        <h6 className="l-through font-italic">{numberWithCommas(price)} VNĐ</h6>
                     </div>
                 )
             }else{
                 return (
                     <div>
-                        <h6>{price} VNĐ</h6>
+                        <h6>{numberWithCommas(price)} VNĐ</h6>
                     </div>
                 )
             }
         } catch (error) {
             
         }
+    }
+
+    function numberWithCommas(x) {
+        x = x.toString();
+        var pattern = /(-?\d+)(\d{3})/;
+        while (pattern.test(x))
+            x = x.replace(pattern, "$1,$2");
+        return x;
     }
 
     const callApiLimit = async(limit,page,sort) => {
@@ -80,6 +92,55 @@ function ProductLogic({listHangsx,listProduct}){
         callApiLimit(limit, value, sort)
     }
 
+    
+    const onChanSeach = (e) => {
+        const {value} = e.target
+        if(typingTimeOut.current){
+            clearTimeout(typingTimeOut.current);
+        }
+        typingTimeOut.current = setTimeout(()=>{
+            callApiSeachProduct(value)
+        }, 400)
+    }
+
+    const callApiSeachProduct = async(key) =>{
+        try {
+            const url = `/api/v1/product/seach:${key}`
+            const response = await productAPI.get(url)
+            console.log(response)
+            setListProductToHangsx(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const callApiAddProductToCart = async(id) => {
+        try {
+            const url = `/api/v2/user/card/product:${id}`
+            const response = await CartAPI.get(url)
+            const {status} = response
+            console.log(response)
+            if(status===200){
+                showNotification('success', 'Success!', 'Đã thêm vào giỏ hàng !!!')
+            }else{
+                showNotification('error', 'Lỗi !', 'Thêm vào giỏ hàng thất bại !!!')
+            }
+            console.log(response)
+        } catch (error) {
+            
+        }
+    }
+
+    const onClickAddCart =(id)=>{
+        const userLogin = localStorage.getItem("userLogin")
+        if(userLogin === null) {
+            swal("Error", "Bạn chưa đăng nhập. Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng", "error");
+            history.replace("/login")
+        } else {
+            callApiAddProductToCart(id)
+        }
+    }
+
     return(
         <Product 
             listHangsx={listHangsx}
@@ -90,6 +151,8 @@ function ProductLogic({listHangsx,listProduct}){
             showPrice={showPrice}
             onChangePage={onChangePage}
             onClickPage={onClickPage}
+            onChanSeach={onChanSeach}
+            onClickAddCart={onClickAddCart}
         />
     )
 }

@@ -45,7 +45,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                         <div className="col-lg-6">
                             <div className="s_Product_carousel">
                                 <div className="single-prd-item">
-                                    <img className="img-fluid" src={"img/"+product.image} alt={"img/"+product.image} />
+                                    <a href={product.image}><img className="img-fluid" src={product.image} alt={product.image} /></a>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +190,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                                         <div className="review_item">
                                             <div className="media">
                                                 <div className="d-flex">
-                                                    <img src="img/product/review-1.png" alt />
+                                                    <img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Freview-1.png?alt=media&token=814cbccc-048f-4986-b492-59c78c05bacb" alt />
                                                 </div>
                                                 <div className="media-body">
                                                     <h4>Blake Ruiz</h4>
@@ -205,7 +205,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                                         <div className="review_item reply">
                                             <div className="media">
                                                 <div className="d-flex">
-                                                    <img src="img/product/review-2.png" alt />
+                                                    <img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Freview-2.png?alt=media&token=22f2a6f0-8130-4816-bb3d-53bfa23b35ad" alt />
                                                 </div>
                                                 <div className="media-body">
                                                     <h4>Blake Ruiz</h4>
@@ -220,7 +220,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                                         <div className="review_item">
                                             <div className="media">
                                                 <div className="d-flex">
-                                                    <img src="img/product/review-3.png" alt />
+                                                    <img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Freview-3.png?alt=media&token=e13dae89-1758-4b45-8152-29cdd347903f" alt />
                                                 </div>
                                                 <div className="media-body">
                                                     <h4>Blake Ruiz</h4>
@@ -295,7 +295,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                                         <div className="review_item">
                                             <div className="media">
                                                 <div className="d-flex">
-                                                    <img src="img/product/review-1.png" alt />
+                                                    <img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Freview-1.png?alt=media&token=814cbccc-048f-4986-b492-59c78c05bacb" alt />
                                                 </div>
                                                 <div className="media-body">
                                                     <h4>Blake Ruiz</h4>
@@ -313,7 +313,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                                         <div className="review_item">
                                             <div className="media">
                                                 <div className="d-flex">
-                                                    <img src="img/product/review-2.png" alt />
+                                                    <img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Freview-2.png?alt=media&token=22f2a6f0-8130-4816-bb3d-53bfa23b35ad" alt />
                                                 </div>
                                                 <div className="media-body">
                                                     <h4>Blake Ruiz</h4>
@@ -331,7 +331,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
                                         <div className="review_item">
                                             <div className="media">
                                                 <div className="d-flex">
-                                                    <img src="img/product/review-3.png" alt />
+                                                    <img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Freview-3.png?alt=media&token=e13dae89-1758-4b45-8152-29cdd347903f" alt />
                                                 </div>
                                                 <div className="media-body">
                                                     <h4>Blake Ruiz</h4>

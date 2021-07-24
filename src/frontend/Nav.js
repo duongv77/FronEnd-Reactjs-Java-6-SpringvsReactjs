@@ -8,8 +8,8 @@ import {
     Redirect
 } from "react-router-dom";
 import ContactLogic from '../backend/ContactLogic';
-import ShoppingCardLogic from '../backend/ShoppingCardLogic';
-import HistoryShoppingLogic from '../backend/HistoryShoppingLogic';
+import ShoppingCardLogic from '../User/ShoppingCardLogic';
+import HistoryShoppingLogic from '../User/HistoryShoppingLogic';
 import InfoLogic from '../backend/InfoLogic';
 import LoginLogic from '../backend/LoginLogic';
 import Product from '../backend/ProductLogic';
@@ -24,9 +24,8 @@ import NotFound from "./NotFound";
 import axios from "../api/RestFullAPI";
 import ProductDetailLogic from "../backend/ProductDetailLogic";
 
-function Nav() {
+function Nav({SetUserLogin, user, setUser}) {
     const [listHangsx, setListHangsx] = useState([]);
-    const [user, setUser] = useState(localStorage.getItem("userLogin"))
     const [listProduct, setListProduct] = useState([])
 
     useEffect(() => {
@@ -63,18 +62,7 @@ function Nav() {
         
     }, [])
 
-    const SetUserLogin = (data) => {
-        
-
-        // //lưu vào localStorage đổi obj thành json
-        // localStorage.setItem('accessTokenLogin', JSON.stringify(data))
-        // const user = localStorage.getItem('accessTokenLogin')
-
-        // //Lấy từ trong localStorage được mã hóa lại
-        // console.log("user đăng nhập lưu trong localStorage ", JSON.parse(user))
-
-         setUser(data)
-    }
+    
     // alert
     var notification;
     var container = document.querySelector('#notification-container');
@@ -130,7 +118,7 @@ function Nav() {
     return (
         <Router>
             <div>
-
+               
 
                 <div>
                     <header className="header_area sticky-header">
@@ -201,8 +189,6 @@ function Nav() {
                 <Switch>
                     <Route exact path="/">
                         <HomeLogic
-                            setListHangsx={setListHangsx}
-                            showNotification={showNotification}
                             listHangsx={listHangsx}
                             />
                     </Route>
@@ -241,7 +227,7 @@ function Nav() {
                     </Route>
                     <Route exact path="/shoppingcard"
                         render ={()=>{
-                            return localStorage.getItem("accessTokenLogin") === null ? <Redirect to="/login" />:  <ShoppingCardLogic />
+                            return localStorage.getItem("accessTokenLogin") === null ? <Redirect to="/login" />:  <ShoppingCardLogic showNotification={showNotification}/>
                         }}
                     >
                     </Route>
@@ -256,10 +242,14 @@ function Nav() {
                         }}
                     ></Route>
                     <Route exact path="/product"> 
-                        <Product listHangsx={listHangsx} listProduct={listProduct}/>
+                        <Product 
+                            listHangsx={listHangsx} 
+                            listProduct={listProduct} 
+                            showNotification={showNotification}
+                        />
                     </Route>
                     <Route exact
-                    path = "/productdetail_:id"
+                        path = "/productdetail/:id"
                     >
                         <ProductDetailLogic
                             showNotification={showNotification}

@@ -31,7 +31,7 @@ function CreateUser({register, handleSubmit, errors,onHandleSubmit}) {
                                         <h3>Đăng kí tài khoản</h3>
                                         <div className="row login_form" >
                                             <div className="col-md-12 form-group">
-                                                <input type="text" className="form-control" placeholder="Username đăng nhập..." {...register("fullname", { required: true })} />
+                                                <input type="text" className="form-control" placeholder="Username đăng nhập..." {...register("username", { required: true })} />
                                                 {errors.fullname && <span className="text-danger">Vui lòng không để trống !</span>}
                                             </div>
                                             <div className="col-md-12 form-group">
@@ -39,7 +39,7 @@ function CreateUser({register, handleSubmit, errors,onHandleSubmit}) {
                                                 {errors.email && <span className="text-danger">Vui lòng không để trống !</span>}
                                             </div>
                                             <div className="col-md-12 form-group">
-                                                <input type="text" className="form-control" placeholder="Họ tên..." {...register("username", { required: true })} />
+                                                <input type="text" className="form-control" placeholder="Họ tên..." {...register("fullname", { required: true })} />
                                                 {errors.username && <span className="text-danger">Vui lòng không để trống !</span>}
                                             </div>
                                             <div className="col-md-12 form-group">
