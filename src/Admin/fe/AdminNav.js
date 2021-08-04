@@ -9,14 +9,37 @@ import {
 import AdminProduct from "../be/AdminProductLogic";
 import AdminHome from "./AdminHome";
 import AdminUser from "./AminUser";
+import AdminSaleLogic from "../be/AdminSaleLogic";
+import AdminSaleDetail from "./AdminSaleDetail";
+import swal from 'sweetalert';
 
 function AdminNav() {
-
-    const user = JSON.parse(localStorage.getItem("userLogin"))
-    const {photo, fullname, activated} = user
-    console.log(user)
+    let user;
     const history = useHistory()
+    const getLocalUser = () => {
+        try {
+            user = JSON.parse(localStorage.getItem("userLogin"))
+        } catch (error) {
+            swal({
+                title: "Chú ý?",
+                text: "Phiên đăng nhập của bạn đã hết hạn !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                localStorage.removeItem("accessTokenLogin")
+                localStorage.removeItem("userLogin")
+                // if (willDelete) {
+                //   history.replace('/login')
+                // } 
+              });
+        }
+    }
 
+    getLocalUser()
+    const {photo, fullname, activated} = user
+    
     const logout = (e) => {
         e.preventDefault()
         localStorage.removeItem("userLogin")
@@ -100,12 +123,10 @@ function AdminNav() {
                                             </a>
                                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                                 <li><a className="dropdown-item" href="/">Giao diện người dùng</a></li>
-                                                <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                <li><NavLink className="dropdown-item" to="/admin/sale">Thiết lập Sale</NavLink></li>
                                                 <li><hr className="dropdown-divider" /></li>
                                                 <li>
-                                                    <a className="dropdown-item" href 
-                                                            onClick={(e)=>{logout(e)}}
-                                                        >
+                                                    <a className="dropdown-item" href   onClick={(e)=>{logout(e)}} >
                                                             Đăng xuất
                                                         </a>
                                                 </li>
@@ -136,6 +157,13 @@ function AdminNav() {
                                 <Route exact path="/admin/user">
                                     <AdminUser />
                                 </Route>
+                                <Route exact path="/admin/sale" >
+                                    <AdminSaleLogic showNotification={showNotification}/>
+                                </Route>
+                                <Route exact path="/admin/sale/:id">
+                                    <AdminSaleDetail showNotification={showNotification} />
+                                </Route>
+
                             </Switch>
                         </div>
                     </div>

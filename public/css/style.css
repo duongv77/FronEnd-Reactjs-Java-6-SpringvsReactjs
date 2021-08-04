@@ -206,6 +206,13 @@
     color: red;
     transition: 0.3s;
 }
+.add-product{
+    color: green;
+    font-size: 100px;
+}
+.add-product:hover{
+    color: red;
+}
   
     
   

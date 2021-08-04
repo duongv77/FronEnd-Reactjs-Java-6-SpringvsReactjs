@@ -11,6 +11,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
         }
     }
 
+   
     const showMess = () =>{
         console.log("vãi c")
         swal({

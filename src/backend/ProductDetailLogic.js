@@ -28,6 +28,15 @@ function ProductDetailLogic({showNotification}){
         }
     }
 
+    function numberWithCommas(x) {
+        x = x.toString();
+        var pattern = /(-?\d+)(\d{3})/;
+        while (pattern.test(x))
+            x = x.replace(pattern, "$1.$2");
+        return x;
+    }
+
+
     const showPrice = (price, saleObj) => {
         try {
             if(saleObj!==null){
@@ -35,14 +44,14 @@ function ProductDetailLogic({showNotification}){
                 const priceOld = price*(100-sale)/100
                 return (
                     <div>
-                        <h2>{priceOld} VNĐ </h2>
-                        <span className="font-italic">Giá cũ: {price} VNĐ</span>
+                        <h2>{numberWithCommas(priceOld) } VNĐ </h2>
+                        <span className="font-italic">Giá cũ: {numberWithCommas(price)} VNĐ</span>
                     </div>
                 )
             }else{
                 return (
                     <div>
-                        <h6>{price} VNĐ</h6>
+                        <h6>{numberWithCommas(price)} VNĐ</h6>
                     </div>
                 )
             }

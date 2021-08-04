@@ -11,6 +11,7 @@ function AdminProductLogic({showNotification}){
     const [photoOfProductUpdate, setPhotoOfProductUpdate] = useState()
     const [listHangSx, setListHangSx] = useState([])
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [productUpdateLogic, setproductUpdateLogic] = useState()
 
     const callApiListHangsx = async() => {
         try {
@@ -101,14 +102,44 @@ function AdminProductLogic({showNotification}){
        }
     }
 
+    const idProduct = (id) => {
+        setproductUpdateLogic(id)
+    }
+
     const onSubmitUpdateProduct = () => {
         const name = document.getElementById('name').value
-        const price = document.getElementById('price').value
-        const available = document.getElementById('available').value
-        const productype = document.getElementById('productype').value
+        const price = Number(document.getElementById('price').value)
+        const available = Number(document.getElementById('available').value)
+        const prdt = Number(document.getElementById('productype').value)
+        const productypes = listHangSx.filter((value) => {
+            return value.id === prdt 
+        })
+        const id = productUpdateLogic
+        const productype = productypes[0]
         const description = document.getElementById('description').value
-        const value = {name, price ,available ,productype ,description}
+        const createdate = document.getElementById('createdate').value
+        const image = photoOfProductUpdate
+        const value = {id, name, price ,available ,productype ,description, image, createdate}
         console.log(value)
+        callApiUpdateProduct(value)
+    }
+
+    const callApiUpdateProduct = async(data) => {
+        try {
+            const url = "/api/v2/admin/product"
+            const response = await productAPI.putAdmin(url , data)
+            showNotification('success', 'Success!', 'Update thành công !!!')
+            setListProduct((oldValue)=>{
+                let newValue = oldValue.map(function(val) {
+                    return val.id ===response.id ? response : val
+                })
+                return newValue
+            })
+            setPhotoOfProductUpdate(null)
+        } catch (error) {
+            showNotification('error', 'Lỗi !', 'Update không thành công !!!')
+            console.log(error)
+        }
     }
 
     const upImg = () => {
@@ -123,7 +154,37 @@ function AdminProductLogic({showNotification}){
         } catch (error) {
             console.log(error)
         }
+    }
 
+    const onSubmitAddProduct = (data) =>{
+        const {name, oldprice,oldavailable,description, oldproductype} = data
+        console.log(data)
+        const oldId  = Number(oldproductype)
+        const productypes = listHangSx.filter((value) => {
+            return value.id === oldId 
+        })
+        const productype = productypes[0]
+        const price = Number(oldprice)
+        const available = Number(oldavailable)
+        const image = photoOfProductUpdate
+        const value = { name, price ,available ,productype ,description, image}
+        console.log(value)
+        callApiCreateProduct(value)
+    }
+    const callApiCreateProduct = async(data) => {
+        console.log(data)
+        try {
+            const url = "/api/v2/admin/create/product"
+            const response = await productAPI.postAdmin(url,data )
+            showNotification('success', 'Success!', 'Thêm sản phẩm' +data.name+ ' thành công !!!')
+            setListProduct([
+                ...listProduct,
+                response
+            ])
+        } catch (error) {
+            showNotification('error', 'Lỗi !', 'Thêm không thành công !!!')
+            console.log(error.response)
+        }
     }
     return(
         <AdminProduct 
@@ -138,6 +199,8 @@ function AdminProductLogic({showNotification}){
         photoOfProductUpdate={photoOfProductUpdate}
         upImg={upImg}
         listHangSx={listHangSx}
+        idProduct={idProduct}
+        onSubmitAddProduct={onSubmitAddProduct}
         />
     )
 }

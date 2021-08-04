@@ -25,6 +25,14 @@ const productAPI= {
               },
         }
         return axiosClient.post(url,data , config)
+    },
+    putAdmin: (url, data) => {
+        const config ={
+            headers: {
+                Authorization: 'Bearer ' +  localStorage.getItem("accessTokenLogin"),
+              },
+        }
+        return axiosClient.put(url,data , config)
     }
 }
 

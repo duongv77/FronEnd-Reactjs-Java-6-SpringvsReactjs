@@ -10,7 +10,8 @@ import Switch from '@material-ui/core/Switch';
 import { useState } from "react";
 
 
-function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, handleSubmit, errors, onSubmitUpdateProduct, setPhotoOfProductUpdate, photoOfProductUpdate , upImg, listHangSx}) {
+
+function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, handleSubmit, errors, onSubmitUpdateProduct, setPhotoOfProductUpdate, photoOfProductUpdate, upImg, listHangSx, idProduct, onSubmitAddProduct }) {
     const [productUpdate, setProductUpdate] = useState({})
 
     const onClickDataProductUpdate = (e, value) => {
@@ -18,6 +19,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
         console.log(value)
         setProductUpdate(value)
         setPhotoOfProductUpdate(value.image)
+        idProduct(value.id)
     }
 
     const StyledTableCell = withStyles((theme) => ({
@@ -45,10 +47,19 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
 
     const hsx = () => {
         try {
-            const {name} = productUpdate.productype
+            const { name } = productUpdate.productype
             return name
         } catch (error) {
-            
+
+        }
+    }
+
+    const valueHsx = () => {
+        try {
+            const { id } = productUpdate.productype
+            return id
+        } catch (error) {
+
         }
     }
 
@@ -74,6 +85,11 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                     <div className="col-4">
                         <input className="form-control me-2" type="search" placeholder="Tên sản phẩm..." aria-label="Search" />
                     </div>
+                    <div className="col-2">
+                    </div>
+                    <div className="col-3 d-flex justify-content-end">
+                        <button className="btn btn-outline-success d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#addProduct">Thêm sản phẩm</button>
+                    </div>
                 </div>
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="customized table">
@@ -83,6 +99,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                 <StyledTableCell align="left">Tên SP</StyledTableCell>
                                 <StyledTableCell align="left">Giá</StyledTableCell>
                                 <StyledTableCell align="left">Trạng thái</StyledTableCell>
+                                <StyledTableCell align="left">Ngày tạo</StyledTableCell>
                                 <StyledTableCell align="left">Hình ảnh</StyledTableCell>
                                 <StyledTableCell align="left">Hãng sản xuất</StyledTableCell>
                                 <StyledTableCell align="left" col="2">Thao tác</StyledTableCell>
@@ -103,7 +120,10 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                                                     onChange={(e) => { onChageSwith(e, value) }}
                                                 /></StyledTableCell>
-                                            <StyledTableCell align="left"><img src={value.image} alt={value.image} height={70} /></StyledTableCell>
+                                            <StyledTableCell align="left">{value.createdate}</StyledTableCell>
+                                            <StyledTableCell align="left">
+                                                <img src={value.image} alt={value.image} height={70} />
+                                            </StyledTableCell>
                                             <StyledTableCell align="left">{value.productype.name}</StyledTableCell>
                                             <StyledTableCell align="left" col="2">
                                                 <a href="/" className="cdn mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
@@ -127,31 +147,94 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                 </TableContainer>
             </div>
 
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" id="addProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl" >
                     <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="staticBackdropLabel">Update Product</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                        <div className="modal-header bg-dark ">
+                            <h5 className="modal-title text-light" id="staticBackdropLabel">Create Product</h5>
+                            <button type="button" className="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close" />
                         </div>
-                        <form onSubmit={handleSubmit(onSubmitUpdateProduct)}>
+                        <form onSubmit={handleSubmit(onSubmitAddProduct)}>
                             <div className="modal-body row">
                                 <div className="col-5">
-                                    <img className="img-max" src={photoOfProductUpdate}  alt={photoOfProductUpdate} />
-                                    <input type="file" className="form-control-file" id="img" onChange={()=>{upImg()}}/>
+                                    <img className="img-max" src={photoOfProductUpdate} alt={photoOfProductUpdate} />
+                                    <input type="file" className="form-control-file" id="img" onChange={() => { upImg() }} />
                                 </div>
                                 <div className="col-7">
                                     <div className="form-group">
                                         <label>Tên sản phẩm</label>
-                                        <input type="text" defaultValue={productUpdate.name} id="name" className="form-control" placeholder="Tên sản phẩm..."  />
+                                        <input type="text" className="form-control" placeholder="Tên sản phẩm..." {...register("name", { required: true })} />
+                                        {errors.name && <span>This field is required</span>}
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Giá</label>
+                                        <input type="number" className="form-control" placeholder="Giá bán..." {...register("oldprice", { required: true })} />
+                                        {errors.price && <span>This field is required</span>}
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Trạng thái</label>
+                                        <select className="form-control" {...register("oldavailable")}>
+                                            <option value={1}>Còn hàng</option>
+                                            <option value={0}>Hết hàng</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label >Hãng sản xuất</label>
+                                        <select className="form-control"  {...register("oldproductype")}>
+                                            <option checked>Chọn</option>
+                                            {
+                                                listHangSx.map(function (value) {
+                                                    return (
+                                                        <option value={value.id}>{value.name}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Mô tả sản phẩm</label>
+                                        <textarea class="form-control" rows="3" placeholder="Mô tả sản phẩm..." {...register("description")}></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" className="btn btn-outline-success" data-bs-dismiss="modal">Thêm mới</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog modal-xl" >
+                    <div className="modal-content">
+                        <div className="modal-header bg-dark">
+                            <h5 className="modal-title text-light" id="staticBackdropLabel">Update Product</h5>
+                            <button type="button" className="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close" />
+                        </div>
+                        <form onSubmit={handleSubmit(onSubmitUpdateProduct)}>
+                            <div className="modal-body row">
+                                <div className="col-5">
+                                    <img className="img-max" src={photoOfProductUpdate} alt={photoOfProductUpdate} />
+                                    <input type="file" className="form-control-file" id="img" onChange={() => { upImg() }} />
+                                </div>
+                                <div className="col-7">
+                                    <div className="form-group">
+                                        <label>Tên sản phẩm</label>
+                                        <input type="text" defaultValue={productUpdate.name} id="name" className="form-control" placeholder="Tên sản phẩm..." />
                                     </div>
                                     <div className="form-group">
                                         <label>Giá</label>
                                         <input type="number" className="form-control" id="price" defaultValue={productUpdate.price} placeholder="Giá bán..." />
                                     </div>
                                     <div className="form-group">
+                                        <label>Ngày tạo</label>
+                                        <input type="text" className="form-control" id="createdate" defaultValue={productUpdate.createdate} placeholder="Giá bán..." />
+                                    </div>
+                                    <div className="form-group">
                                         <label>Trạng thái</label>
-                                        <select id="available" className="form-control">
+                                        <select id="available" value={productUpdate.available} className="form-control">
                                             <option checked>{
                                                 productUpdate.available === 1 ? "Còn hàng" : "Hết hàng"
                                             }</option>
@@ -162,10 +245,10 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                     <div className="form-group">
                                         <label >Hãng sản xuất</label>
                                         <select id="productype" className="form-control">
-                                            <option checked>{hsx()}</option>
+                                            <option checked value={valueHsx()}>{hsx()}</option>
                                             {
-                                                listHangSx.map(function(value){
-                                                    return(
+                                                listHangSx.map(function (value) {
+                                                    return (
                                                         <option value={value.id}>{value.name}</option>
                                                     )
                                                 })
@@ -180,7 +263,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Đóng</button>
-                                <button type="submit" className="btn btn-outline-success">Cập nhập</button>
+                                <button type="submit" className="btn btn-outline-success" data-bs-dismiss="modal">Cập nhập</button>
                             </div>
                         </form>
                     </div>
