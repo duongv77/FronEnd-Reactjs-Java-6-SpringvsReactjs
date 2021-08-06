@@ -23,15 +23,13 @@ function LoginLogic({SetUserLogin}) {
             
             console.log("đây là data login gửi về ", response)
             if (response !== '') {
-                const {id, fullname, email, photo,activated , accesstoken} = response
+                const {id, fullname, email, photo,activated , accesstoken , admin} = response
                 const userResponse = {
-                    id, fullname, email, photo,activated
+                    id, fullname, email, photo,activated, admin
                 }
-                console.log("User vừa đăng nhập", userResponse)
                 history.replace("/")
                 swal("Success", "Bạn đã đăng nhập thành công. Xin chào!", "success");
                 SetUserLogin(userResponse)
-
                 localStorage.setItem("accessTokenLogin", accesstoken)
 
                 
@@ -51,7 +49,9 @@ function LoginLogic({SetUserLogin}) {
             return response;
         } catch (error) {
             swal("Error", "Đăng nhập không thành công. Thông tin tài khoản mật khẩu không chính xác!!!", "error");
+            history.push("/login")
             localStorage.removeItem("accessTokenLogin")
+            console.log(error)
         }
     }
 

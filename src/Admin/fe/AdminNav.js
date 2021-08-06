@@ -99,8 +99,6 @@ function AdminNav() {
 
     return (
         <div>
-
-            <Router>
                 <div>
                     <div>
                         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -147,32 +145,10 @@ function AdminNav() {
                             
                         </div>
                         <div className="col-10">
-                            <Switch>
-                                <Route exact path="/admin">
-                                    <AdminHome />
-                                </Route>
-                                <Route exact path="/admin/product">
-                                    <AdminProduct showNotification={showNotification}/>
-                                </Route>
-                                <Route exact path="/admin/user">
-                                    <AdminUser />
-                                </Route>
-                                <Route exact path="/admin/sale" >
-                                    <AdminSaleLogic showNotification={showNotification}/>
-                                </Route>
-                                <Route exact path="/admin/sale/:id">
-                                    <AdminSaleDetail showNotification={showNotification} />
-                                </Route>
-
-                            </Switch>
+                            
                         </div>
                     </div>
                 </div>
-
-
-            </Router>
-
-
         </div>
     )
 }
