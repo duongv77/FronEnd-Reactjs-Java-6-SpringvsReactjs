@@ -4,6 +4,11 @@ import {
 } from "react-router-dom";
 
 function CreateUser({register, handleSubmit, errors,onHandleSubmit}) {
+    window.scroll({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+      });
     return (
         <div>
             

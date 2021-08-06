@@ -39,7 +39,6 @@ function ShoppingCard({ productCart, onClickInput, createOrder, onClickCheckbox 
             x = x.replace(pattern, "$1.$2");
         return x;
     }
-
     return (
         <div>
             {/* Start Banner Area */}

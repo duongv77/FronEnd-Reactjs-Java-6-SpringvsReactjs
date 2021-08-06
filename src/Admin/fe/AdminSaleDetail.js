@@ -104,7 +104,7 @@ function AdminSaleDetail({showNotification}) {
 
     try {
         return (
-            <div className="row">
+            <div className="row col-10 offset-1">
                 <div className="col-3" >
                     <div className="card mt-2" style={{ width: '18rem' }}>
                         <div className="card-body">

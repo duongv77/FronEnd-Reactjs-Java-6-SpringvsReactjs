@@ -1,7 +1,11 @@
 
 function Info({ onHanleChage, register, handleSubmit, errors , userLogin, upImg, image}) {
     const { photo, fullname, email, activated } = userLogin
-
+    window.scroll({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+      });
     return (
         <div>
             <section className="login_box_area section_gap mt-5">

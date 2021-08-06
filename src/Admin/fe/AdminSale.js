@@ -2,7 +2,8 @@ import { NavLink } from "react-router-dom";
 
 const AdminSale = ({ listSale, register, handleSubmit, errors, onSubmit , onClickDelete}) => {
     return (
-        <div className="row">
+        <div className="col-10 offset-1">
+            <div className="row ">
             {
                 listSale.map((value, index) => {
                     return (
@@ -62,6 +63,7 @@ const AdminSale = ({ listSale, register, handleSubmit, errors, onSubmit , onClic
                 </div>
             </div>
 
+        </div>
         </div>
     )
 }

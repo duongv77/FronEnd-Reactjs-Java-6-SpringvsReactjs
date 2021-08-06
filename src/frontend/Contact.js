@@ -3,6 +3,11 @@ import {
 } from "react-router-dom";
 
 function Contact(){
+    window.scroll({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+      });
     return(
         <div>
             {/* Start Banner Area */}

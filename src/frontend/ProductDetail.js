@@ -1,7 +1,14 @@
 import {  NavLink} from "react-router-dom";
 import swal from 'sweetalert';
-
+import { useEffect } from "react";
 function  ProductDetail({product, showValueSale, showPrice, showNotification}){
+    useEffect(()=>{
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+          });
+    },[])
     const tenPr =()=>{
         try {
             const {name} = product.productype
@@ -10,17 +17,7 @@ function  ProductDetail({product, showValueSale, showPrice, showNotification}){
             
         }
     }
-
    
-    const showMess = () =>{
-        console.log("vãi c")
-        swal({
-            title: "Good job!",
-            text: "Gửi thành công!",
-            icon: "success",
-            button: "Aww yiss!",
-          });
-    }
     return(
         <div>
             {/* Start Banner Area */}

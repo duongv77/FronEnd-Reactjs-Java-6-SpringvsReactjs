@@ -9,17 +9,15 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import { useState } from "react";
 
-
-
-function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, handleSubmit, errors, onSubmitUpdateProduct, setPhotoOfProductUpdate, photoOfProductUpdate, upImg, listHangSx, idProduct, onSubmitAddProduct }) {
+function AdminProduct(props) {
     const [productUpdate, setProductUpdate] = useState({})
 
     const onClickDataProductUpdate = (e, value) => {
         e.preventDefault()
         console.log(value)
         setProductUpdate(value)
-        setPhotoOfProductUpdate(value.image)
-        idProduct(value.id)
+        props.setPhotoOfProductUpdate(value.image)
+        props.idProduct(value.id)
     }
 
     const StyledTableCell = withStyles((theme) => ({
@@ -83,7 +81,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                         </select>
                     </div>
                     <div className="col-4">
-                        <input className="form-control me-2" type="search" placeholder="Tên sản phẩm..." aria-label="Search" />
+                        <input className="form-control me-2" type="search" placeholder="Tên sản phẩm..." aria-label="Search" onChange={props.onChanSeach}/>
                     </div>
                     <div className="col-2">
                     </div>
@@ -107,7 +105,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                         </TableHead>
                         <TableBody>
                             {
-                                listProduct.map(function (value, index) {
+                                props.showListProduct.map(function (value, index) {
                                     index++
                                     return (
                                         <StyledTableRow key={index}>
@@ -118,7 +116,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                                 <Switch
                                                     defaultChecked={value.available === 1 ? true : false}
                                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                                    onChange={(e) => { onChageSwith(e, value) }}
+                                                    onChange={(e) => { props.onChageSwith(e, value) }}
                                                 /></StyledTableCell>
                                             <StyledTableCell align="left">{value.createdate}</StyledTableCell>
                                             <StyledTableCell align="left">
@@ -127,12 +125,12 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                             <StyledTableCell align="left">{value.productype.name}</StyledTableCell>
                                             <StyledTableCell align="left" col="2">
                                                 <a href="/" className="cdn mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"
-                                                    onClick={(e) => { onClickDelete(e, value) }}
+                                                    onClick={(e) => { props.onClickDelete(e, value) }}
                                                 >
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                                 <a href="#" className="cdn" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                                    onClick={(e) => { onClickDataProductUpdate(e, value) }}
+                                                    onClick={(e) => { props.onClickDataProductUpdate(e, value) }}
                                                 >
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
@@ -154,36 +152,36 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                             <h5 className="modal-title text-light" id="staticBackdropLabel">Create Product</h5>
                             <button type="button" className="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close" />
                         </div>
-                        <form onSubmit={handleSubmit(onSubmitAddProduct)}>
+                        <form onSubmit={props.handleSubmit(props.onSubmitAddProduct)}>
                             <div className="modal-body row">
                                 <div className="col-5">
-                                    <img className="img-max" src={photoOfProductUpdate} alt={photoOfProductUpdate} />
-                                    <input type="file" className="form-control-file" id="img" onChange={() => { upImg() }} />
+                                    <img className="img-max" src={props.photoOfProductUpdate} alt={props.photoOfProductUpdate} />
+                                    <input type="file" className="form-control-file" id="img" onChange={() => { props.upImg() }} />
                                 </div>
                                 <div className="col-7">
                                     <div className="form-group">
                                         <label>Tên sản phẩm</label>
-                                        <input type="text" className="form-control" placeholder="Tên sản phẩm..." {...register("name", { required: true })} />
-                                        {errors.name && <span>This field is required</span>}
+                                        <input type="text" className="form-control" placeholder="Tên sản phẩm..." {...props.register("name", { required: true })} />
+                                        {props.errors.name && <span>This field is required</span>}
                                     </div>
                                     <div className="form-group">
                                         <label>Giá</label>
-                                        <input type="number" className="form-control" placeholder="Giá bán..." {...register("oldprice", { required: true })} />
-                                        {errors.price && <span>This field is required</span>}
+                                        <input type="number" className="form-control" placeholder="Giá bán..." {...props.register("oldprice", { required: true })} />
+                                        {props.errors.price && <span>This field is required</span>}
                                     </div>
                                     <div className="form-group">
                                         <label>Trạng thái</label>
-                                        <select className="form-control" {...register("oldavailable")}>
+                                        <select className="form-control" {...props.register("oldavailable")}>
                                             <option value={1}>Còn hàng</option>
                                             <option value={0}>Hết hàng</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
                                         <label >Hãng sản xuất</label>
-                                        <select className="form-control"  {...register("oldproductype")}>
+                                        <select className="form-control"  {...props.register("oldproductype")}>
                                             <option checked>Chọn</option>
                                             {
-                                                listHangSx.map(function (value) {
+                                                props.listHangSx.map(function (value) {
                                                     return (
                                                         <option value={value.id}>{value.name}</option>
                                                     )
@@ -193,7 +191,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                     </div>
                                     <div class="form-group">
                                         <label >Mô tả sản phẩm</label>
-                                        <textarea class="form-control" rows="3" placeholder="Mô tả sản phẩm..." {...register("description")}></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Mô tả sản phẩm..." {...props.register("description")}></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -213,11 +211,11 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                             <h5 className="modal-title text-light" id="staticBackdropLabel">Update Product</h5>
                             <button type="button" className="btn-close btn-light bg-light" data-bs-dismiss="modal" aria-label="Close" />
                         </div>
-                        <form onSubmit={handleSubmit(onSubmitUpdateProduct)}>
+                        <form onSubmit={props.handleSubmit(props.onSubmitUpdateProduct)}>
                             <div className="modal-body row">
                                 <div className="col-5">
-                                    <img className="img-max" src={photoOfProductUpdate} alt={photoOfProductUpdate} />
-                                    <input type="file" className="form-control-file" id="img" onChange={() => { upImg() }} />
+                                    <img className="img-max" src={props.photoOfProductUpdate} alt={props.photoOfProductUpdate} />
+                                    <input type="file" className="form-control-file" id="img" onChange={() => { props.upImg() }} />
                                 </div>
                                 <div className="col-7">
                                     <div className="form-group">
@@ -247,7 +245,7 @@ function AdminProduct({ listProduct, onChageSwith, onClickDelete, register, hand
                                         <select id="productype" className="form-control">
                                             <option checked value={valueHsx()}>{hsx()}</option>
                                             {
-                                                listHangSx.map(function (value) {
+                                                props.listHangSx.map(function (value) {
                                                     return (
                                                         <option value={value.id}>{value.name}</option>
                                                     )

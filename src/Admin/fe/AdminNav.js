@@ -26,20 +26,20 @@ function AdminNav() {
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
-              })
-              .then((willDelete) => {
-                localStorage.removeItem("accessTokenLogin")
-                localStorage.removeItem("userLogin")
-                // if (willDelete) {
-                //   history.replace('/login')
-                // } 
-              });
+            })
+                .then((willDelete) => {
+                    localStorage.removeItem("accessTokenLogin")
+                    localStorage.removeItem("userLogin")
+                    // if (willDelete) {
+                    //   history.replace('/login')
+                    // } 
+                });
         }
     }
 
     getLocalUser()
-    const {photo, fullname, activated} = user
-    
+    const { photo, fullname, activated } = user
+
     const logout = (e) => {
         e.preventDefault()
         localStorage.removeItem("userLogin")
@@ -99,56 +99,48 @@ function AdminNav() {
 
     return (
         <div>
+            <div>
                 <div>
-                    <div>
-                        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                            <div className="container-fluid">
-                                <NavLink className="navbar-brand" to="/admin">Admin</NavLink>
-                                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span className="navbar-toggler-icon" />
-                                </button>
-                                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                        <li className="nav-item">
-                                            <NavLink className="nav-link " aria-current="page" to="/admin/product">Sản Phẩm</NavLink>
-                                        </li>
-                                        <li className="nav-item">
-                                            <NavLink className="nav-link" to="/admin/user">Người dùng</NavLink>
-                                        </li>
-                                        <li className="nav-item dropdown">
-                                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Khác
-                                            </a>
-                                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <li><a className="dropdown-item" href="/">Giao diện người dùng</a></li>
-                                                <li><NavLink className="dropdown-item" to="/admin/sale">Thiết lập Sale</NavLink></li>
-                                                <li><hr className="dropdown-divider" /></li>
-                                                <li>
-                                                    <a className="dropdown-item" href   onClick={(e)=>{logout(e)}} >
-                                                            Đăng xuất
-                                                        </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                        <div className="container-fluid">
+                            <NavLink className="navbar-brand" to="/admin">Admin</NavLink>
+                            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span className="navbar-toggler-icon" />
+                            </button>
+                            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li className="nav-item">
+                                        <NavLink className="nav-link " aria-current="page" to="/admin/product">Sản Phẩm</NavLink>
+                                    </li>
+                                    <li className="nav-item">
+                                        <NavLink className="nav-link" to="/admin/user">Người dùng</NavLink>
+                                    </li>
+                                    <li className="nav-item dropdown">
+                                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Khác
+                                        </a>
+                                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li><a className="dropdown-item" href="/">Giao diện người dùng</a></li>
+                                            <li><NavLink className="dropdown-item" to="/admin/sale">Thiết lập Sale</NavLink></li>
+                                            <li><hr className="dropdown-divider" /></li>
+                                            <li>
+                                                <a className="dropdown-item" href onClick={(e) => { logout(e) }} >
+                                                    Đăng xuất
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </div>
-                        </nav>
-                    </div>
-                    <div className="row">
-                        <div className="col-2">
-                            <div className="mt-2 ml-4">
-                                <img src={photo} alt={photo} height={100}/>
-                                <p>Acount: {fullname}</p>
-                                <p>Trạng thái: {activated===1? "Đang Hoạt Động" : "Ngưng Hoạt Động"}</p>
+                            <div>
+                                <img className="mr-2" src={photo} alt={photo} height={40} />
+                                <span>{fullname}</span>
                             </div>
-                            
                         </div>
-                        <div className="col-10">
-                            
-                        </div>
-                    </div>
+                    </nav>
                 </div>
+
+            </div>
         </div>
     )
 }

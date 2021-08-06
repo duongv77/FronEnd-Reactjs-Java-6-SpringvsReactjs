@@ -5,7 +5,11 @@ import {
 
 function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSale, showListProduct, showPrice, onChangePage, onClickPage, onChanSeach, onClickAddCart}) {
     
-    
+    window.scroll({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+      });
     return (
         <div id="category">
             <div>
@@ -17,7 +21,7 @@ function Product({listHangsx, listProductToHangsx,  showAllProduct, showValueSal
                             <div className="col-first">
                                 <h1>Sản phẩm</h1>
                                 <nav className="d-flex align-items-center">
-                                    <NavLink to="/home">Trang chủ<span className="lnr lnr-arrow-right" /></NavLink>
+                                    <NavLink to="/">Trang chủ<span className="lnr lnr-arrow-right" /></NavLink>
                                     <NavLink to="/product">Shop<span className="lnr lnr-arrow-right" /></NavLink>
                                     <a href="category.html">Fashon Category</a>
                                 </nav>

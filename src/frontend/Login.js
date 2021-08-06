@@ -13,6 +13,11 @@ function Login({  register, handleSubmit, errors, onHandleSubmit }) {
         e.preventDefault()
         history.replace("/createUser")
     }
+    window.scroll({
+        top: 100,
+        left: 100,
+        behavior: 'smooth'
+      });
     return (
         <div>
             <div>

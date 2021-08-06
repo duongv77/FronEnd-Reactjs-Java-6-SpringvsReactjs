@@ -1,6 +1,6 @@
 import AdminProduct from "../fe/AdminProduct";
 import productAPI from "../../api/ProductAPI";
-import { useEffect , useState} from "react";
+import { useEffect , useState, useRef} from "react";
 import swal from 'sweetalert';
 import { useForm } from "react-hook-form";
 import productypeApi from "../../api/ProductypeAPI";
@@ -12,6 +12,36 @@ function AdminProductLogic({showNotification}){
     const [listHangSx, setListHangSx] = useState([])
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [productUpdateLogic, setproductUpdateLogic] = useState()
+    const [showListProduct, setShowListProduct] = useState([])
+    const typingTimeOut = useRef(null)
+
+    const onChanSeach = (e) => {
+        const {value} = e.target
+        console.log(value)
+        if(typingTimeOut.current){
+            clearTimeout(typingTimeOut.current);
+        }
+        typingTimeOut.current = setTimeout(()=>{
+            callApiSeachProduct(value)
+        }, 400)
+    }
+
+    const callApiSeachProduct = async(key) =>{
+        try {
+            const url = `/api/v1/product/seach:${key}`
+            const response = await productAPI.get(url)
+            console.log(response.length)
+            if(response.length===0){
+                showNotification('error', 'Lỗi !', 'Không tìm thấy sản phẩm '+ key +' !!!')
+                setShowListProduct(listProduct)
+            }else if(response.length > 0 ){
+                setShowListProduct(response)
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const callApiListHangsx = async() => {
         try {
@@ -29,8 +59,9 @@ function AdminProductLogic({showNotification}){
                 const url = "/api/v2/admin/product"
                 const response = await productAPI.getAdmin(url)
                 setListProduct(response)
+                setShowListProduct(response)
             } catch (error) {
-                
+                console.log(error)
             }
         }
         callApiListProduct()
@@ -46,6 +77,12 @@ function AdminProductLogic({showNotification}){
             const response = await productAPI.getAdmin(url)
             if(response!==''){
                 showNotification('success', 'Success!', 'Update thành công !!!')
+                setShowListProduct((oldValue)=>{
+                    let newValue = oldValue.map((val)=>{
+                        return val.id ===response.id ? response : val
+                    })
+                    return newValue
+                })
                 setListProduct((oldValue)=>{
                     let newValue = oldValue.map((val)=>{
                         return val.id ===response.id ? response : val
@@ -188,7 +225,8 @@ function AdminProductLogic({showNotification}){
     }
     return(
         <AdminProduct 
-        listProduct={listProduct} 
+        onChanSeach={onChanSeach}
+        showListProduct={showListProduct} 
         onChageSwith={onChageSwith} 
         onClickDelete={onClickDelete} 
         register={register}
@@ -201,6 +239,7 @@ function AdminProductLogic({showNotification}){
         listHangSx={listHangSx}
         idProduct={idProduct}
         onSubmitAddProduct={onSubmitAddProduct}
+        showNotification={showNotification}
         />
     )
 }

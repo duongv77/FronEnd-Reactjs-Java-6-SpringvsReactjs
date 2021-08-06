@@ -41,7 +41,7 @@ function Nav(props) {
                             <nav className="navbar navbar-expand-lg navbar-light main_box">
                                 <div className="container">
                                     {/* Brand and toggle get grouped for better mobile display */}
-                                    <a className="navbar-brand logo_h" href="/home"><img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Flogoy.png?alt=media&token=214fffac-45d2-41a6-b785-f77b46c550df" height="50px" alt="logo" /></a>
+                                    <a className="navbar-brand logo_h" href="/"><img src="https://firebasestorage.googleapis.com/v0/b/fistproject-d19c7.appspot.com/o/images%2Flogoy.png?alt=media&token=214fffac-45d2-41a6-b785-f77b46c550df" height="50px" alt="logo" /></a>
                                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                         <span className="icon-bar" />
                                         <span className="icon-bar" />
