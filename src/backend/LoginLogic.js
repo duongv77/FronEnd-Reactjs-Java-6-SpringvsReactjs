@@ -16,16 +16,15 @@ function LoginLogic({SetUserLogin}) {
     let history = useHistory()
 
     const logIn = async (value) => {
-        console.log(value)
         try {
-            const url = '/api/v1/user/login'
+            const url = '/api/v1/login'
             const response = await Axios.postNoToken(url, value);
             
             console.log("đây là data login gửi về ", response)
             if (response !== '') {
-                const {id, fullname, email, photo,activated , accesstoken , admin} = response
+                const {id, fullname, email, photo,activated , accesstoken , admin, userole} = response
                 const userResponse = {
-                    id, fullname, email, photo,activated, admin
+                    id, fullname, email, photo,activated, admin, userole
                 }
                 history.replace("/")
                 swal("Success", "Bạn đã đăng nhập thành công. Xin chào!", "success");

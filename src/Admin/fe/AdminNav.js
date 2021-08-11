@@ -6,11 +6,6 @@ import {
     Redirect,
     useHistory
 } from "react-router-dom";
-import AdminProduct from "../be/AdminProductLogic";
-import AdminHome from "./AdminHome";
-import AdminUser from "./AminUser";
-import AdminSaleLogic from "../be/AdminSaleLogic";
-import AdminSaleDetail from "./AdminSaleDetail";
 import swal from 'sweetalert';
 
 function AdminNav() {
@@ -19,6 +14,9 @@ function AdminNav() {
     const getLocalUser = () => {
         try {
             user = JSON.parse(localStorage.getItem("userLogin"))
+            if(user === null){
+                history.replace("/")
+            }
         } catch (error) {
             swal({
                 title: "Chú ý?",
@@ -38,63 +36,33 @@ function AdminNav() {
     }
 
     getLocalUser()
-    const { photo, fullname, activated } = user
+
+    
+
+    const photo = () => {
+        try {
+            const { photo } = user
+            return photo
+        } catch (error) {
+            
+        }
+        
+    }
+    const fullname = () => {
+        try {
+             const { fullname} = user
+            return fullname
+        } catch (error) {
+            
+        }
+       
+    }
 
     const logout = (e) => {
         e.preventDefault()
         localStorage.removeItem("userLogin")
         localStorage.removeItem("accessTokenLogin")
         history.push("/login")
-    }
-
-    var notification;
-    var container = document.querySelector('#notification-container');
-    var visible = false;
-    var queue = [];
-
-    function createNotification() {
-        notification = document.createElement('div');
-        var btn = document.createElement('button');
-        var title = document.createElement('div');
-        var msg = document.createElement('div');
-        btn.className = 'notification-close';
-        title.className = 'notification-title';
-        msg.className = 'notification-message';
-        btn.addEventListener('click', hideNotification, false);
-        notification.addEventListener('animationend', hideNotification, false);
-        notification.addEventListener('webkitAnimationEnd', hideNotification, false);
-        notification.appendChild(btn);
-        notification.appendChild(title);
-        notification.appendChild(msg);
-    }
-
-    function updateNotification(type, title, message) {
-        notification.className = 'notification notification-' + type;
-        notification.querySelector('.notification-title').innerHTML = title;
-        notification.querySelector('.notification-message').innerHTML = message;
-    }
-
-    function showNotification(type, title, message) {
-        if (visible) {
-            queue.push([type, title, message]);
-            return;
-        }
-        if (!notification) {
-            createNotification();
-        }
-        updateNotification(type, title, message);
-        container.appendChild(notification);
-        visible = true;
-    }
-
-    function hideNotification() {
-        if (visible) {
-            visible = false;
-            container.removeChild(notification);
-            if (queue.length) {
-                showNotification.apply(null, queue.shift());
-            }
-        }
     }
 
     return (
@@ -133,8 +101,8 @@ function AdminNav() {
                                 </ul>
                             </div>
                             <div>
-                                <img className="mr-2" src={photo} alt={photo} height={40} />
-                                <span>{fullname}</span>
+                                <img className="mr-2" src={photo()} alt={photo()} height={40} />
+                                <span>{fullname()}</span>
                             </div>
                         </div>
                     </nav>

@@ -11,10 +11,8 @@ import { useState } from "react";
 
 function AdminProduct(props) {
     const [productUpdate, setProductUpdate] = useState({})
-
     const onClickDataProductUpdate = (e, value) => {
         e.preventDefault()
-        console.log(value)
         setProductUpdate(value)
         props.setPhotoOfProductUpdate(value.image)
         props.idProduct(value.id)
@@ -61,6 +59,14 @@ function AdminProduct(props) {
         }
     }
 
+    function numberWithCommas(x) {
+        x = x.toString();
+        var pattern = /(-?\d+)(\d{3})/;
+        while (pattern.test(x))
+            x = x.replace(pattern, "$1.$2");
+        return x;
+    }
+
     return (
         <div>
             <div className="col-10 offset-1">
@@ -86,7 +92,8 @@ function AdminProduct(props) {
                     <div className="col-2">
                     </div>
                     <div className="col-3 d-flex justify-content-end">
-                        <button className="btn btn-outline-success d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#addProduct">Thêm sản phẩm</button>
+                        <button className="btn btn-outline-success " data-bs-toggle="modal" data-bs-target="#addProduct">Thêm sản phẩm</button>
+                        <button  className="btn btn-outline-success ml-2" onClick={(e) => props.exportToCSV()}>Tải file Excel</button>
                     </div>
                 </div>
                 <TableContainer component={Paper}>
@@ -111,7 +118,7 @@ function AdminProduct(props) {
                                         <StyledTableRow key={index}>
                                             <StyledTableCell >  {index} </StyledTableCell>
                                             <StyledTableCell align="left">{value.name}</StyledTableCell>
-                                            <StyledTableCell align="left">{value.price}</StyledTableCell>
+                                            <StyledTableCell align="left">{numberWithCommas(value.price)}</StyledTableCell>
                                             <StyledTableCell align="left">
                                                 <Switch
                                                     defaultChecked={value.available === 1 ? true : false}
@@ -130,7 +137,7 @@ function AdminProduct(props) {
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                                 <a href="#" className="cdn" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                                    onClick={(e) => { props.onClickDataProductUpdate(e, value) }}
+                                                    onClick={(e) => { onClickDataProductUpdate(e, value) }}
                                                 >
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
@@ -179,7 +186,6 @@ function AdminProduct(props) {
                                     <div className="form-group">
                                         <label >Hãng sản xuất</label>
                                         <select className="form-control"  {...props.register("oldproductype")}>
-                                            <option checked>Chọn</option>
                                             {
                                                 props.listHangSx.map(function (value) {
                                                     return (

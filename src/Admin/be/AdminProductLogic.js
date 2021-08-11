@@ -5,6 +5,8 @@ import swal from 'sweetalert';
 import { useForm } from "react-hook-form";
 import productypeApi from "../../api/ProductypeAPI";
 import firebase from "firebase"
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 function AdminProductLogic({showNotification}){
     const [listProduct , setListProduct] = useState([])
@@ -17,7 +19,6 @@ function AdminProductLogic({showNotification}){
 
     const onChanSeach = (e) => {
         const {value} = e.target
-        console.log(value)
         if(typingTimeOut.current){
             clearTimeout(typingTimeOut.current);
         }
@@ -195,7 +196,6 @@ function AdminProductLogic({showNotification}){
 
     const onSubmitAddProduct = (data) =>{
         const {name, oldprice,oldavailable,description, oldproductype} = data
-        console.log(data)
         const oldId  = Number(oldproductype)
         const productypes = listHangSx.filter((value) => {
             return value.id === oldId 
@@ -205,7 +205,6 @@ function AdminProductLogic({showNotification}){
         const available = Number(oldavailable)
         const image = photoOfProductUpdate
         const value = { name, price ,available ,productype ,description, image}
-        console.log(value)
         callApiCreateProduct(value)
     }
     const callApiCreateProduct = async(data) => {
@@ -223,23 +222,38 @@ function AdminProductLogic({showNotification}){
             console.log(error.response)
         }
     }
+
+    //xuất file excel
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+
+    const exportToCSV = () => {
+        const ws = XLSX.utils.json_to_sheet(listProduct);
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], {type: fileType});
+        FileSaver.saveAs(data, "product" + fileExtension);
+    }
+
+    
     return(
         <AdminProduct 
-        onChanSeach={onChanSeach}
-        showListProduct={showListProduct} 
-        onChageSwith={onChageSwith} 
-        onClickDelete={onClickDelete} 
-        register={register}
-        handleSubmit={handleSubmit}
-        errors={errors}
-        onSubmitUpdateProduct={onSubmitUpdateProduct}
-        setPhotoOfProductUpdate={setPhotoOfProductUpdate}
-        photoOfProductUpdate={photoOfProductUpdate}
-        upImg={upImg}
-        listHangSx={listHangSx}
-        idProduct={idProduct}
-        onSubmitAddProduct={onSubmitAddProduct}
-        showNotification={showNotification}
+            onChanSeach={onChanSeach}
+            showListProduct={showListProduct} 
+            onChageSwith={onChageSwith} 
+            onClickDelete={onClickDelete} 
+            register={register}
+            handleSubmit={handleSubmit}
+            errors={errors}
+            onSubmitUpdateProduct={onSubmitUpdateProduct}
+            setPhotoOfProductUpdate={setPhotoOfProductUpdate}
+            photoOfProductUpdate={photoOfProductUpdate}
+            upImg={upImg}
+            listHangSx={listHangSx}
+            idProduct={idProduct}
+            onSubmitAddProduct={onSubmitAddProduct}
+            showNotification={showNotification}
+            exportToCSV={exportToCSV}
         />
     )
 }
